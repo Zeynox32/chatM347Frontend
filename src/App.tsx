@@ -2,6 +2,7 @@ import './App.css'
 import SignIn from "./singIn-Up/SingIn.tsx";
 import { Routes, Route } from "react-router-dom";
 import SignUp from "./singIn-Up/SingUp.tsx";
+import HomeScreen from "./main/Homescreen.tsx";
 
 function App() {
     return (
@@ -12,6 +13,8 @@ function App() {
             margin: 0,
         }}>
             <Routes>
+                <Route path="/home" element={<HomeScreen/>} />
+                <Route path="/" element={<SignIn />} />
                 <Route path="/sign-in" element={<SignIn />} />
                 <Route path="/sign-up" element={<SignUp />} />
             </Routes>
