@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography';
 import Chat from '../chat/Chat.tsx';
 import Sidebar from "../sidebar/Sidebar.tsx";
 import * as React from "react";
+import ListItemButton from "@mui/material/ListItemButton";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const drawerWidth = 240;
 
@@ -14,13 +16,18 @@ export default function Homescreen() {
     const [currentChatId, setCurrentChatId] = React.useState(1);
 
     return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-                <Toolbar>
+        <Box sx={{display: 'flex'}}>
+            <CssBaseline/>
+            <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
+                <Toolbar sx={{display: "flex" , justifyContent: "space-between" }}>
                     <Typography variant="h6" noWrap component="div">
                         Clipped drawer
                     </Typography>
+                    <Box>
+                        <ListItemButton>
+                            <AccountCircleIcon fontSize={"large"}/>
+                        </ListItemButton>
+                    </Box>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -28,7 +35,7 @@ export default function Homescreen() {
                 sx={{
                     width: drawerWidth,
                     flexShrink: 0,
-                    [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+                    [`& .MuiDrawer-paper`]: {width: drawerWidth, boxSizing: 'border-box'},
                 }}
             >
                 <Sidebar
