@@ -87,7 +87,7 @@ export default function Homescreen() {
     return (
         <Box sx={{display: 'flex', height: "100%"}}>
             <CssBaseline/>
-            <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
+            <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1, height: "6vh"}}>
                 <Toolbar sx={{display: "flex" , justifyContent: "space-between" }}>
                     <Typography variant="h6" noWrap component="div">
                         Clipped drawer
@@ -129,7 +129,9 @@ export default function Homescreen() {
                     ]}
                 />
             </Drawer>
-            <Chat chat={{...currentChat}} sendMessage={sendMessage}/>
+            <Box sx={{flexGrow: 1, p:0, mt: "6vh", height: "94vh", width: "100%", justifyContent: "flex-end", overflow: "hidden"}}>
+                <Chat chat={{...currentChat}} sendMessage={sendMessage}/>
+            </Box>
         </Box>
     );
 }
