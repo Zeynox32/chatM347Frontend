@@ -57,6 +57,11 @@ const SignInContainer = styled(Stack)(({theme}) => ({
     },
 }));
 
+type UserCredentials = {
+    eMail: string;
+    password: string;
+};
+
 export default function SignIn() {
     const [emailError, setEmailError] = React.useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
@@ -84,7 +89,14 @@ export default function SignIn() {
             password: data.get('password'),
         });
 
-        //post("http://localhost:8080/user/login", )
+        const credentials: UserCredentials = {
+            eMail: data.get('email') as string,
+            password: data.get('password') as string,
+        };
+
+        post("http://localhost:8080/user/logout", null, false)
+
+        post("http://localhost:8080/user/login", credentials, false)
     };
 
     const validateInputs = () => {

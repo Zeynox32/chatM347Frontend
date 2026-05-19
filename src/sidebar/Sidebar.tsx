@@ -20,9 +20,13 @@ type Sidebar = {
 function Sidebar(sidebar: Sidebar) {
 
     function handleChatClick(chatId: number) {
+        console.log("Chat clicked: " + chatId);
         sidebar.setCurrentChatId(chatId);
         sidebar.changeChat(chatId);
     }
+
+    console.log("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM")
+    console.log(sidebar.chats)
 
     return (
         <Box>
@@ -30,9 +34,9 @@ function Sidebar(sidebar: Sidebar) {
             <Box sx={{ overflow: 'auto' }}>
                 <List>
                     {sidebar.chats.map((metadata) => (
-                        <ListItem key={metadata.chatId} disablePadding>
-                            <ListItemButton selected={sidebar.currentChatId === metadata.chatId}
-                                            onClick={() => handleChatClick(metadata.chatId)}>
+                        <ListItem key={metadata.id} disablePadding>
+                            <ListItemButton selected={sidebar.currentChatId === metadata.id}
+                                            onClick={() => handleChatClick(metadata.id)}>
                                 <ListItemIcon>
                                     <ChatIcon />
                                 </ListItemIcon>

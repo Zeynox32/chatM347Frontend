@@ -1,4 +1,5 @@
 export type ChatProps = {
+    chatId?: number;
     meta: ChatMetadata;
     members: Member[];
     messages: ChatMessage[];
@@ -12,7 +13,8 @@ export type ChatMessage = {
 };
 
 export type ChatMetadata = {
-    id: number;
+    chatId?: number;
+    id?: number;
     name: string;
     createdAt: Date;
 }
@@ -29,6 +31,6 @@ export type MessageProps = {
 };
 
 export type ChatPreview = {
-    chatId: number;
+    id: number;
     name: string;
 }

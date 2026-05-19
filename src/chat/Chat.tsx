@@ -23,10 +23,10 @@ function Chat({ chat, sendMessage }: input) {
             <Stack direction="column" spacing={2} sx={{ height: "100%", minHeight: 0 }}>
                 <Box sx={{flexGrow: 1, minHeight: 0, overflowY: "auto"}}>
                     <Box sx={{minHeight: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-end"}}>
-                        {chat.messages.map((message) => (
+                        {chat?.messages?.map((message) => (
                             <Message
                                 text={message.text}
-                                senderName={chat.members.find(member => member.id === parseInt(message.senderId))?.name || "Unknown"}
+                                senderName={chat?.members?.find(member => member.id === parseInt(message.senderId))?.name || "Unknown"}
                                 timestamp={message.timestamp}
                             />
                         ))}
