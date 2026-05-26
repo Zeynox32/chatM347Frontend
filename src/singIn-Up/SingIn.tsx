@@ -14,6 +14,10 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import {styled} from '@mui/material/styles';
 import {post} from '../api/api.ts'
+import type {LoginSignupReturnProps} from "../assets/Props.tsx";
+import { useNavigate } from "react-router-dom";
+import {LoginOutlined} from "@mui/icons-material";
+
 
 const Card = styled(MuiCard)(({theme}) => ({
     display: 'flex',
@@ -57,12 +61,19 @@ const SignInContainer = styled(Stack)(({theme}) => ({
     },
 }));
 
+type UserCredentials = {
+    eMail: string;
+    password: string;
+};
+
 export default function SignIn() {
     const [emailError, setEmailError] = React.useState(false);
     const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
     const [passwordError, setPasswordError] = React.useState(false);
     const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
     const [open, setOpen] = React.useState(false);
+    const navigate = useNavigate();
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -72,19 +83,26 @@ export default function SignIn() {
         setOpen(false);
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         if (emailError || passwordError) {
             event.preventDefault();
             return;
         }
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
 
-        //post("http://localhost:8080/user/login", )
+        const credentials: UserCredentials = {
+            eMail: data.get('email') as string,
+            password: data.get('password') as string,
+        };
+
+        await post("http://localhost:8080/user/logout", null, false)
+
+        const user: LoginSignupReturnProps = await post("http://localhost:8080/user/login", credentials, false)
+
+        sessionStorage.setItem("displayName", JSON.stringify(user.displayName));
+        sessionStorage.setItem("userId", JSON.stringify(user.id));
+        navigate("/home");
     };
 
     const validateInputs = () => {

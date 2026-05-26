@@ -123,13 +123,6 @@ export default function SignUp() {
         }
 
         xy(user)
-
-        console.log({
-            name: data.get('name'),
-            lastName: data.get('lastName'),
-            email: data.get('email'),
-            password: data.get('password'),
-        });
     };
 
     async function xy(user: NewUser) {

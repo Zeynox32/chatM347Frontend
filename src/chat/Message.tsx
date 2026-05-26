@@ -32,9 +32,6 @@ function stringAvatar(name: string) {
 }
 
 export default function Message({ text, senderName, timestamp }: MessageProps) {
-    console.log(text)
-    console.log(senderName)
-    console.log(timestamp)
     return (
         <Box sx={{ display: "flex", flexDirection: "row", marginBottom: 2, alignItems: "center"}}>
             <Avatar {...stringAvatar(senderName)} />
@@ -46,6 +43,6 @@ export default function Message({ text, senderName, timestamp }: MessageProps) {
                 </CardContent>
             </Card>
         </Box>
-    );
+    );S
 }
 

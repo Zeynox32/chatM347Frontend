@@ -1,7 +1,4 @@
-export async function post(url: string, body: any, auth: boolean) {
-
-    console.log("****************api.ts****************");
-    console.log(body)
+export async function post(url: string, body: unknown, auth: boolean) {
 
     try {
         let response: Response;
@@ -20,6 +17,7 @@ export async function post(url: string, body: any, auth: boolean) {
 
             response = await fetch(url, {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -28,49 +26,46 @@ export async function post(url: string, body: any, auth: boolean) {
         }
 
         if (!response.ok) {
-            throw new Error(`HTTP-Fehler: ${response.status}`);
+            throw new Error(`HTTP-Error: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log("Antwort:", data);
+        console.log("answer:", data);
+        return data;
     } catch (error) {
-        console.error("Fehler beim Senden:", error);
+        console.error("Error sending:", error);
     }
 }
 
 export async function get(url: string, auth: boolean) {
-
-    console.log("****************api.ts****************");
-
     try {
         let response: Response;
+
         if (auth) {
-            console.log("auth true")
             response = await fetch(url, {
                 method: "GET",
                 credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
             });
-        }else{
-            console.log("auth false")
-
+        } else {
             response = await fetch(url, {
                 method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                credentials: "include",
             });
         }
 
+        const text = await response.text();
+
         if (!response.ok) {
-            throw new Error(`HTTP-Fehler: ${response.status}`);
+            throw new Error(`HTTP-Error: ${response.status}: ${text}`);
         }
 
-        const data = await response.json();
-        console.log("Antwort:", data);
+        const json = JSON.parse(text);
+
+        console.log("answer:", json);
+
+        return json;
     } catch (error) {
-        console.error("Fehler beim Senden:", error);
+        console.error("Error sending:", error);
+        throw error;
     }
 }
