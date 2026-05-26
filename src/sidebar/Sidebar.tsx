@@ -20,13 +20,9 @@ type Sidebar = {
 function Sidebar(sidebar: Sidebar) {
 
     function handleChatClick(chatId: number) {
-        console.log("Chat clicked: " + chatId);
         sidebar.setCurrentChatId(chatId);
         sidebar.changeChat(chatId);
     }
-
-    console.log("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM")
-    console.log(sidebar.chats)
 
     return (
         <Box>

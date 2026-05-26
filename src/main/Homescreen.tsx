@@ -21,6 +21,7 @@ type ChatSummery = {
 
 export default function Homescreen() {
     const [currentChatId, setCurrentChatId] = React.useState(1);
+    //TODO: only for testing if no chat is available, remove it later, add UI to create new chat and add members to it
     const [currentChat, setCurrentChat] = React.useState<ChatProps>({
         "chatId": 0,
         "meta": {
@@ -91,8 +92,9 @@ export default function Homescreen() {
         setCurrentChat(await get(`http://localhost:8080/chat?chat-id=${chatId}`, true));
     }
 
+    //TODO: remove this function, only for testing, add UI to create new chat and add members to it
     async function addChat(){
-        const response = await fetch("http://localhost:8080/chat", {
+        await fetch("http://localhost:8080/chat", {
             method: "POST",
             credentials: "include",
             headers: {
@@ -109,18 +111,11 @@ export default function Homescreen() {
             }),
         });
 
-        console.log("oooooooooooooooooooooooooooooooooooooooooooooooooooooo")
-
-        console.log(response);
-
         fetchChats();
     }
 
     async function fetchChats() {
-        console.log("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ")
         const chatsSummaries = await get("http://localhost:8080/chat/all-metadata", true);
-        console.log(chatsSummaries);
-        console.log("************************************")
         setChats(chatsSummaries);
     }
 
