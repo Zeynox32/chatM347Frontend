@@ -9,13 +9,13 @@ import Sidebar from "../sidebar/Sidebar.tsx";
 import * as React from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import type {ChatProps, User} from "../assets/Props.tsx";
+import type {ChatProps} from "../assets/Props.tsx";
 import {get, post} from "../api/api.ts";
 
 const drawerWidth = 240;
 
 type ChatSummery = {
-    chatId: number;
+    id: number;
     name: string;
 }
 
@@ -76,11 +76,10 @@ export default function Homescreen() {
         ]
     });
     const [chats, setChats] = React.useState<ChatSummery[]>([]);
-    const [user, setUser] = React.useState<User>();
 
     async function fetchUser(){
         const user = await get("http://localhost:8080/user", true);
-        setUser({id: user.id, username: user.username});
+        console.log(user)
     }
 
     async function sendMessage(message:string){
