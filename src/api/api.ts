@@ -69,3 +69,28 @@ export async function get(url: string, auth: boolean) {
         throw error;
     }
 }
+
+export async function delet(url: string) {
+    try {
+        const response = await fetch(url, {
+            method: "DELETE",
+            credentials: "include",
+        });
+        
+
+        const text = await response.text();
+
+        if (!response.ok) {
+            throw new Error(`HTTP-Error: ${response.status}: ${text}`);
+        }
+
+        const json = JSON.parse(text);
+
+        console.log("answer:", json);
+
+        return json;
+    } catch (error) {
+        console.error("Error sending:", error);
+        throw error;
+    }
+}

@@ -7,24 +7,44 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ChatIcon from '@mui/icons-material/Chat';
-import type {ChatPreview} from "../assets/Props.tsx";
 import {Button} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
+import LogoutIcon from '@mui/icons-material/Logout';
+import {delet, get} from "../api/api.ts";
 
 type Sidebar = {
-    chats: ChatPreview[];
     currentChatId: number;
     setCurrentChatId: React.Dispatch<React.SetStateAction<number>>;
     changeChat: (chatId: number) => void;
     setAddChat: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+type ChatSummery = {
+    id: number;
+    name: string;
+}
+
 
 function Sidebar(sidebar: Sidebar) {
+    const [chats, setChats] = React.useState<ChatSummery[]>([]);
+
+    React.useEffect(() => {
+        fetchChats();
+    }, [sidebar]);
+
+    async function fetchChats() {
+        const chatsSummaries = await get("http://localhost:8080/chat/all-metadata", true);
+        setChats(chatsSummaries);
+    }
 
     function handleChatClick(chatId: number) {
         sidebar.setCurrentChatId(chatId);
         sidebar.changeChat(chatId);
+    }
+
+    async function handleLeaveChat(chatId: number) {
+        await delet(`http://localhost:8080/chat?chat-id=${chatId}`);
+        fetchChats();
     }
 
     return (
@@ -33,14 +53,23 @@ function Sidebar(sidebar: Sidebar) {
             <Toolbar/>
             <Box sx={{overflow: 'auto', flex: 1}}>
                 <List>
-                    {sidebar.chats.map((metadata) => (
+                    {chats.map((metadata) => (
                         <ListItem key={metadata.id} disablePadding>
                             <ListItemButton selected={sidebar.currentChatId === metadata.id}
                                             onClick={() => handleChatClick(metadata.id)}>
                                 <ListItemIcon>
-                                    <ChatIcon/>
+                                    <ChatIcon
+                                    />
                                 </ListItemIcon>
                                 <ListItemText primary={metadata.name}/>
+                                <ListItemIcon>
+                                    <LogoutIcon
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            handleLeaveChat(metadata.id);
+                                        }}
+                                    />
+                                </ListItemIcon>
                             </ListItemButton>
                         </ListItem>
                     ))}

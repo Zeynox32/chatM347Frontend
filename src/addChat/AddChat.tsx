@@ -62,12 +62,12 @@ function AddChat({ currentUser, open, setOpen }: input) {
         const members = chatUser.map(u => {
             return {
                 members_id: u.id,
-                name: u.eMail,
+                name: u.name,
             }
         });
         members.push({
             members_id: currentUser.id,
-            name: currentUser.eMail,
+            name: currentUser.name,
         });
         console.log(members)
         await fetch("http://localhost:8080/chat", {

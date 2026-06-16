@@ -17,6 +17,7 @@ function Chat({ chat, sendMessage }: input) {
         messagesEndRef.current?.scrollIntoView();
     }, [chat.messages]);
 
+    console.log("*********************")
     console.log(chat)
     return (
         <Box sx={{flexGrow: 1, p: 3, height: "100%", paddingLeft: "1", paddingRight: "0"}}>
@@ -26,7 +27,11 @@ function Chat({ chat, sendMessage }: input) {
                         {chat?.messages?.map((message) => (
                             <Message
                                 text={message.text}
-                                senderName={chat?.members?.find(member => member.members_id === parseInt(message.senderId))?.name || "Unknown"}
+                                senderName={
+                                    chat?.members?.find(
+                                        member => member.members_id === Number(message.senderId)
+                                    )?.name || "Unknown"
+                                }
                                 timestamp={message.timestamp}
                             />
                         ))}
