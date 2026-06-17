@@ -30,8 +30,6 @@ function Chat({ chatInput, sendMessage, currentUserId }: input) {
     const userId = currentUserId; // z.B. aus Auth/UserContext
 
     const reloadChat = (chatId: string) => {
-        console.log("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
-        console.log(chatId)
         if(chatId === chat.chatId) {
             updateChat(chatId);
         }
@@ -45,8 +43,6 @@ function Chat({ chatInput, sendMessage, currentUserId }: input) {
         messagesEndRef.current?.scrollIntoView();
     }, [chat.messages]);
 
-    console.log("*********************")
-    console.log(chat)
     return (
         <Box sx={{flexGrow: 1, p: 3, height: "100%", paddingLeft: "1", paddingRight: "0"}}>
             <Stack direction="column" spacing={2} sx={{ height: "100%", minHeight: 0 }}>
