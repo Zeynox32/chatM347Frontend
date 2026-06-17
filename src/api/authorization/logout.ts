@@ -1,7 +1,9 @@
+import {apiUrl} from "../config.ts";
+
 export async function logout() {
     let response: Response;
     try {
-        response = await fetch('http://localhost:8080/user/logout', {
+        response = await fetch(apiUrl('/user/logout'), {
             method: "POST",
             credentials: "include",
             headers: {

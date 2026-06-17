@@ -11,6 +11,7 @@ import {Button} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {delet, get} from "../api/api.ts";
+import {apiUrl} from "../api/config.ts";
 import {useChatUpdates} from "../hooks/ChatHooks.ts";
 
 type Sidebar = {
@@ -43,7 +44,7 @@ function Sidebar(sidebar: Sidebar) {
 
 
     async function fetchChats() {
-        const chatsSummaries = await get("http://localhost:8080/chat/all-metadata");
+        const chatsSummaries = await get(apiUrl("/chat/all-metadata"));
         setChats(chatsSummaries);
     }
 
@@ -53,7 +54,7 @@ function Sidebar(sidebar: Sidebar) {
     }
 
     async function handleLeaveChat(chatId: string) {
-        await delet(`http://localhost:8080/chat?chat-id=${chatId}`);
+        await delet(apiUrl(`/chat?chat-id=${chatId}`));
         fetchChats();
     }
 

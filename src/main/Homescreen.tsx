@@ -11,6 +11,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import type {ChatProps} from "../assets/Props.tsx";
 import {get, post} from "../api/api.ts";
+import {apiUrl} from "../api/config.ts";
 import AddChat from "../addChat/AddChat.tsx";
 
 const drawerWidth = 240;
@@ -22,13 +23,13 @@ export default function Homescreen() {
     const [user, setUser] = React.useState({id: 0, eMail: "", name: ""});
 
     async function fetchUser() {
-        const fetchUser = await get("http://localhost:8080/user");
+        const fetchUser = await get(apiUrl("/user"));
         setUser({id: fetchUser.id, eMail: "", name: fetchUser.username});
     }
 
     async function sendMessage(message: string) {
         if (currentChat) {
-            setCurrentChat(await post(`http://localhost:8080/chat/sendMessage`, {
+            setCurrentChat(await post(apiUrl(`/chat/sendMessage`), {
                 "chatId": currentChat.chatId,
                 "text": message
             }));
@@ -38,7 +39,7 @@ export default function Homescreen() {
     }
 
     async function changeChat(chatId: string) {
-        setCurrentChat(await get(`http://localhost:8080/chat?chat-id=${chatId}`));
+        setCurrentChat(await get(apiUrl(`/chat?chat-id=${chatId}`)));
     }
 
     React.useEffect(() => {

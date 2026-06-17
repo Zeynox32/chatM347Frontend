@@ -6,6 +6,7 @@ import type {ChatProps} from "../assets/Props.tsx";
 import {useEffect, useRef} from "react";
 import { useChatUpdates } from "../hooks/MessageHooks.ts";
 import {get} from "../api/api.ts";
+import {apiUrl} from "../api/config.ts";
 import * as React from "react";
 
 type input = {
@@ -19,7 +20,7 @@ function Chat({ chatInput, sendMessage, currentUserId }: input) {
     const [chat, setChat] = React.useState<ChatProps>(chatInput);
 
     async function updateChat(chatId: string) {
-        setChat(await get(`http://localhost:8080/chat?chat-id=${chatId}`));
+        setChat(await get(apiUrl(`/chat?chat-id=${chatId}`)));
     }
 
     React.useEffect(() => {

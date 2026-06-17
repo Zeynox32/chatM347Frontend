@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
 import {get} from "../api/api.ts";
+import {apiUrl} from "../api/config.ts";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from "@mui/material/Box";
 
@@ -44,7 +45,7 @@ function Settings({ currentUser, open, setOpen }: input) {
             members_id: currentUser.id,
             name: currentUser.name,
         });
-        await fetch("http://localhost:8080/chat", {
+        await fetch(apiUrl("/chat"), {
             method: "POST",
             credentials: "include",
             headers: {

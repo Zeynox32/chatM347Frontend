@@ -1,7 +1,6 @@
 import { Client } from "@stomp/stompjs";
 import { useEffect } from "react";
-
-const WS_URL = "ws://localhost:8080/ws";
+import { WS_URL } from "../api/config.ts";
 
 type ChatUpdateEvent = {
     type: "CHAT_CREATED" | "MESSAGE_CREATED";
