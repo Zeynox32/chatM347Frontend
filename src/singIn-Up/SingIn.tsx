@@ -171,8 +171,6 @@ export default function SignIn() {
                                 id="password"
                                 autoComplete="current-password"
 
-                                // CHANGE: zweites autoFocus entfernt
-
                                 required
                                 fullWidth
                                 variant="outlined"

@@ -1,57 +1,29 @@
-export async function post(url: string, body: unknown, auth: boolean) {
-
+export async function post(url: string, body: unknown) {
     try {
-        let response: Response;
-        if (auth) {
-            console.log("auth true")
-            response = await fetch(url, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(body),
-            });
-        }else{
-            console.log("auth false")
-
-            response = await fetch(url, {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(body),
-            });
-        }
+        const response = await fetch(url, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+        });
 
         if (!response.ok) {
             throw new Error(`HTTP-Error: ${response.status}`);
         }
-
-        const data = await response.json();
-        console.log("answer:", data);
-        return data;
+        return await response.json();
     } catch (error) {
         console.error("Error sending:", error);
     }
 }
 
-export async function get(url: string, auth: boolean) {
+export async function get(url: string) {
     try {
-        let response: Response;
-
-        if (auth) {
-            response = await fetch(url, {
-                method: "GET",
-                credentials: "include",
-            });
-        } else {
-            response = await fetch(url, {
-                method: "GET",
-                credentials: "include",
-            });
-        }
+        const response = await fetch(url, {
+            method: "GET",
+            credentials: "include",
+        });
 
         const text = await response.text();
 
@@ -59,11 +31,7 @@ export async function get(url: string, auth: boolean) {
             throw new Error(`HTTP-Error: ${response.status}: ${text}`);
         }
 
-        const json = JSON.parse(text);
-
-        console.log("answer:", json);
-
-        return json;
+        return JSON.parse(text);
     } catch (error) {
         console.error("Error sending:", error);
         throw error;
@@ -76,7 +44,6 @@ export async function delet(url: string) {
             method: "DELETE",
             credentials: "include",
         });
-        
 
         const text = await response.text();
 
@@ -84,11 +51,7 @@ export async function delet(url: string) {
             throw new Error(`HTTP-Error: ${response.status}: ${text}`);
         }
 
-        const json = JSON.parse(text);
-
-        console.log("answer:", json);
-
-        return json;
+        return await JSON.parse(text);
     } catch (error) {
         console.error("Error sending:", error);
         throw error;

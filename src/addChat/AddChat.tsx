@@ -30,7 +30,7 @@ function AddChat({ currentUser, open, setOpen }: input) {
 
     React.useEffect(() => {
         async function fetchUsers() {
-            const fetchedNames = await get("http://localhost:8080/user/all-users", false);
+            const fetchedNames = await get("http://localhost:8080/user/all-users");
             setAllUser(fetchedNames.filter((n: user) => n.id !== currentUser?.id));
         }
 
@@ -69,7 +69,6 @@ function AddChat({ currentUser, open, setOpen }: input) {
             members_id: currentUser.id,
             name: currentUser.name,
         });
-        console.log(members)
         await fetch("http://localhost:8080/chat", {
             method: "POST",
             credentials: "include",

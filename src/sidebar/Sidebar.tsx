@@ -11,38 +11,48 @@ import {Button} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {delet, get} from "../api/api.ts";
+import {useChatUpdates} from "../hooks/ChatHooks.ts";
 
 type Sidebar = {
-    currentChatId: number;
-    setCurrentChatId: React.Dispatch<React.SetStateAction<number>>;
-    changeChat: (chatId: number) => void;
+    currentChatId: string;
+    setCurrentChatId: React.Dispatch<React.SetStateAction<string>>;
+    changeChat: (chatId: string) => void;
     setAddChat: React.Dispatch<React.SetStateAction<boolean>>;
+    currentUserId: number;
 };
 
 type ChatSummery = {
-    id: number;
+    id: string;
     name: string;
 }
-
 
 function Sidebar(sidebar: Sidebar) {
     const [chats, setChats] = React.useState<ChatSummery[]>([]);
 
     React.useEffect(() => {
         fetchChats();
-    }, [sidebar]);
+    }, []);
+
+    const userId = sidebar.currentUserId;
+
+    const reloadChatList = () => {
+        fetchChats()
+    };
+
+    useChatUpdates(userId, reloadChatList);
+
 
     async function fetchChats() {
-        const chatsSummaries = await get("http://localhost:8080/chat/all-metadata", true);
+        const chatsSummaries = await get("http://localhost:8080/chat/all-metadata");
         setChats(chatsSummaries);
     }
 
-    function handleChatClick(chatId: number) {
+    function handleChatClick(chatId: string) {
         sidebar.setCurrentChatId(chatId);
         sidebar.changeChat(chatId);
     }
 
-    async function handleLeaveChat(chatId: number) {
+    async function handleLeaveChat(chatId: string) {
         await delet(`http://localhost:8080/chat?chat-id=${chatId}`);
         fetchChats();
     }
@@ -75,7 +85,7 @@ function Sidebar(sidebar: Sidebar) {
                     ))}
                 </List>
             </Box>
-            <Box sx={{width: "100%", height: '7vh', padding: 1}}>
+            <Box sx={{width: "100%", height: '5em', padding: 1}}>
                 <Button
                     sx={{width: "100%", height: '100%'}}
                     variant="contained"

@@ -17,22 +17,28 @@ const drawerWidth = 240;
 
 export default function Homescreen() {
     const [addChat, setAddChat] = React.useState(false);
-    const [currentChatId, setCurrentChatId] = React.useState(1);
+    const [currentChatId, setCurrentChatId] = React.useState("");
     const [currentChat, setCurrentChat] = React.useState<ChatProps>();
-    const [user, setUser] = React.useState({id: 0, name: ""});
+    const [user, setUser] = React.useState({id: 0, eMail: "", name: ""});
 
-    async function fetchUser(){
-        const fetchUser = await get("http://localhost:8080/user", true);
-        setUser({id: fetchUser.id, name: fetchUser.username});
-        console.log(user)
+    async function fetchUser() {
+        const fetchUser = await get("http://localhost:8080/user");
+        setUser({id: fetchUser.id, eMail: "", name: fetchUser.username});
     }
 
-    async function sendMessage(message:string){
-        setCurrentChat( await post(`http://localhost:8080/chat/sendMessage`, {"chatId": currentChat.chatId, "text": message}, true));
+    async function sendMessage(message: string) {
+        if (currentChat) {
+            setCurrentChat(await post(`http://localhost:8080/chat/sendMessage`, {
+                "chatId": currentChat.chatId,
+                "text": message
+            }));
+        } else {
+            console.error("No chat selected");
+        }
     }
 
-    async function changeChat(chatId:number){
-        setCurrentChat(await get(`http://localhost:8080/chat?chat-id=${chatId}`, true));
+    async function changeChat(chatId: string) {
+        setCurrentChat(await get(`http://localhost:8080/chat?chat-id=${chatId}`));
     }
 
     React.useEffect(() => {
@@ -43,8 +49,8 @@ export default function Homescreen() {
     return (
         <Box sx={{display: 'flex', height: "100%"}}>
             <CssBaseline/>
-            <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1, height: "7vh"}}>
-                <Toolbar sx={{display: "flex" , justifyContent: "space-between" }}>
+            <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1, height: "4em"}}>
+                <Toolbar sx={{display: "flex", justifyContent: "space-between"}}>
                     <Typography variant="h6" noWrap component="div">
                         Chat M347
                     </Typography>
@@ -68,6 +74,7 @@ export default function Homescreen() {
                     currentChatId={currentChatId}
                     changeChat={changeChat}
                     setAddChat={setAddChat}
+                    currentUserId={user.id}
                 />
             </Drawer>
             {addChat && (
@@ -90,7 +97,7 @@ export default function Homescreen() {
                             overflow: "hidden",
                         }}
                     >
-                        <Chat chat={{ ...currentChat }} sendMessage={sendMessage} />
+                        <Chat currentUserId={user.id} chatInput={{...currentChat}} sendMessage={sendMessage}/>
                     </Box>
                 ) : (
                     <Box

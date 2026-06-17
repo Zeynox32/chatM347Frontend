@@ -4,14 +4,41 @@ import ChatInput from "./ChatInput.tsx";
 import Stack from "@mui/material/Stack";
 import type {ChatProps} from "../assets/Props.tsx";
 import {useEffect, useRef} from "react";
+import { useChatUpdates } from "../hooks/MessageHooks.ts";
+import {get} from "../api/api.ts";
+import * as React from "react";
 
 type input = {
-    chat: ChatProps;
+    currentUserId: number;
+    chatInput: ChatProps;
     sendMessage: (message: string) => void;
 };
 
-function Chat({ chat, sendMessage }: input) {
+function Chat({ chatInput, sendMessage, currentUserId }: input) {
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const [chat, setChat] = React.useState<ChatProps>(chatInput);
+
+    async function updateChat(chatId: string) {
+        setChat(await get(`http://localhost:8080/chat?chat-id=${chatId}`));
+    }
+
+    React.useEffect(() => {
+        setChat(chatInput);
+    }, [chatInput]);
+
+    const userId = currentUserId; // z.B. aus Auth/UserContext
+
+    const reloadChat = (chatId: string) => {
+        console.log("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
+        console.log(chatId)
+        if(chatId === chat.chatId) {
+            updateChat(chatId);
+        }
+    };
+
+    useChatUpdates(userId, reloadChat);
+
+
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView();
